@@ -87,6 +87,13 @@ class Request:
     def path_param(self) -> dict:
         return self.environ['path_parameters'] or {}
 
+    @property
+    def config(self):
+        if self.context:
+            return self.context.config
+        else:
+            return None
+
 
 class Response:
     """

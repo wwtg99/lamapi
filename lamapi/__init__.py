@@ -1,5 +1,5 @@
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 
 
-from lamapi.wrappers import Request, Response
-from lamapi.app import Application
+from .wrappers import Request, Response
+from .app import Application

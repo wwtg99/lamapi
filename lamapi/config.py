@@ -18,6 +18,9 @@ class BaseConfig:
     Basic class for config.
     """
 
+    # environments
+    ENV = dict(os.environ)
+
     # logger configuration
     LOG_LEVEL = os.environ.get('LOG_LEVEL') or 'ERROR'
     LOG_FORMATTER = os.environ.get('LOG_FORMATTER') or '%(asctime)s [%(levelname)s] %(filename)s (%(lineno)d): %(message)s'

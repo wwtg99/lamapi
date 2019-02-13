@@ -1,4 +1,5 @@
 import logging
+import re
 from .config import BaseConfig
 from .wrappers import Request, Response
 from .exceptions import RequestError, ServerError, NotFoundError, MethodNotAllowedError
@@ -18,6 +19,7 @@ class Router:
         :param callback:
         """
         self.path = path
+        self.compiled_path = self._compile_path(path)
         self.method = method
         self.callback = callback
 
@@ -27,7 +29,18 @@ class Router:
     def __repr__(self):
         return '{} {}'.format(self.method or 'ALL', self.path)
 
-    def match_method(self, method):
+    def match_path(self, path) -> bool:
+        """
+        Check whether path is matched.
+
+        :param path:
+        :return: bool
+        """
+        if self.compiled_path.match(path):
+            return True
+        return False
+
+    def match_method(self, method) -> bool:
         """
         Check whether method is allowed.
 
@@ -48,10 +61,18 @@ class Router:
         else:
             return False
 
+    def _compile_path(self, path):
+        if '{' in path and '}' in path:
+            sub_path = re.sub(r'{\w+?}', '[a-zA-Z0-9_]+?', path)
+            compiled_path = re.compile('^' + sub_path + '$')
+        else:
+            compiled_path = re.compile('^' + path + '$')
+        return compiled_path
+
 
 class Application:
 
-    routers = {}
+    routers = []
 
     _request_middlewares = []
 
@@ -146,14 +167,16 @@ class Application:
 
         :param path:
         :param method:
-        :param callback:
+        :param callback: a function or dict of {'method': function}
         :return:
         """
-        router = Router(path=path, method=method, callback=callback)
-        if path in self.routers:
-            self.routers[path].append(router)
+        if isinstance(callback, dict):
+            for m, func in callback.items():
+                router = Router(path=path, method=m.upper(), callback=func)
+                self.routers.append(router)
         else:
-            self.routers[path] = [router]
+            router = Router(path=path, method=method, callback=callback)
+            self.routers.append(router)
         return self.routers
 
     def find_router(self, path='/', method=None) -> Router:
@@ -164,10 +187,11 @@ class Application:
         :param method:
         :return: Router
         """
-        if path in self.routers:
-            for r in self.routers[path]:
-                if isinstance(r, Router) and r.match_method(method):
-                    return r
+        find = list(filter(lambda r: r.match_path(path), self.routers))
+        if find:
+            for router in find:
+                if router.match_method(method):
+                    return router
             raise MethodNotAllowedError('Method not allowed')
         else:
             raise NotFoundError('Not Found')

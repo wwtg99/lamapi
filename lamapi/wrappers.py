@@ -22,6 +22,15 @@ class Request:
         return self.environ.get('path') or '/'
 
     @cached_property
+    def resource(self) -> str:
+        """
+        Get requested resource.
+
+        :return: str
+        """
+        return self.environ.get('resource') or self.path
+
+    @cached_property
     def method(self) -> str:
         """
         Get requested method.

@@ -24,6 +24,17 @@ class TestApplication:
         assert router.match_method('POST') is True
         assert router.match_method('PUT') is True
         assert router.match_method('DELETE') is True
+        assert router.match_path('/test1') is True
+        assert router.match_path('/test1/') is False
+        assert router.match_path('/test2') is False
+        router = Router(path='/test2/{id}')
+        assert router.match_path('/test2/1') is True
+        assert router.match_path('/test2/aa') is True
+        assert router.match_path('/test2/b1') is True
+        assert router.match_path('/test2/c2_aa') is True
+        assert router.match_path('/test2') is False
+        assert router.match_path('/test2/') is False
+        assert router.match_path('/test2/1/') is False
 
     def test_register_router(self):
         app = Application()

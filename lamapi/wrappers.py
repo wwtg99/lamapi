@@ -128,7 +128,7 @@ class Response:
         return '<{} [{}]>'.format(self.__class__.__name__, self.status_code)
 
     def parse_body(self):
-        if isinstance(self.response, dict):
+        if isinstance(self.response, (dict, list, tuple, set)):
             return json.dumps(self.response, default=lambda x: str(x))
         elif isinstance(self.response, Exception):
             return json.dumps({'message': str(self.response)})

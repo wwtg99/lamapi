@@ -63,7 +63,7 @@ class Router:
 
     def _compile_path(self, path):
         if '{' in path and '}' in path:
-            sub_path = re.sub(r'{\w+?}', '[a-zA-Z0-9_]+?', path)
+            sub_path = re.sub(r'{\w+?}', '[a-zA-Z0-9_-]+?', path)
             compiled_path = re.compile('^' + sub_path + '$')
         else:
             compiled_path = re.compile('^' + path + '$')

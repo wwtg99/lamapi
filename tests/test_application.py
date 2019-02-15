@@ -35,6 +35,9 @@ class TestApplication:
         assert router.match_path('/test2') is False
         assert router.match_path('/test2/') is False
         assert router.match_path('/test2/1/') is False
+        assert router.match_path('/test2/a-1') is True
+        assert router.match_path('/test2/a_1') is True
+        assert router.match_path('/test2/a=1') is False
 
     def test_register_router(self):
         app = Application()

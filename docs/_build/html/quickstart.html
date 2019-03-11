@@ -1,0 +1,278 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Quick Start &#8212; lamapi  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Configuration" href="configuration.html" />
+    <link rel="prev" title="Installation" href="installation.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="quick-start">
+<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="a-minimal-application">
+<h2>A Minimal Application<a class="headerlink" href="#a-minimal-application" title="Permalink to this headline">¶</a></h2>
+<p>We assume you install Lamapi under <strong>lib</strong> directory and start a serverless project using Serverless Framework. <a class="reference internal" href="installation.html"><span class="doc">Installation</span></a>.</p>
+<p>A minimal Lamapi application looks something like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lib.lamapi.app</span> <span class="kn">import</span> <span class="n">Application</span>
+
+<span class="k">def</span> <span class="nf">lambda_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
+
+    <span class="nd">@app.route</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;Hello&#39;</span>
+
+    <span class="k">return</span> <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>So what did that code do?</p>
+<ol class="arabic simple">
+<li>First we import <strong>Application</strong> class, an instance of this class will help us to handle http event and return response.</li>
+<li>Next in the <strong>lambda_handler()</strong> function (which is the entry point for the Lambda) we create an instance of this class.</li>
+<li>Then we use the <strong>route()</strong> decorator to tell Lamapi what URL should trigger our function.</li>
+<li>The function receives a request object and returns the message we want to display in the user’s browser.</li>
+</ol>
+<p>Just save it as hello.py or something similar. Then deploy it to the AWS Lambda and API Gateway or deploy using <strong>Serverless Framework</strong> as below.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>serverless deploy
+</pre></div>
+</div>
+<p>Then test it as:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>serverless invoke -f hello
+</pre></div>
+</div>
+<p>Then you will get output as below:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>blalbal
+</pre></div>
+</div>
+<p>Is it as simple as Flask?</p>
+</div>
+<div class="section" id="routing">
+<h2>Routing<a class="headerlink" href="#routing" title="Permalink to this headline">¶</a></h2>
+<p>Routing is as simple as <strong>Flask</strong>. Use <em>app.route</em> descriptor to functions with path and/or methods.</p>
+<p>Listening on path <code class="docutils literal notranslate"><span class="pre">/</span></code> with all methods,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">lambda_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
+
+    <span class="nd">@app.route</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;Hello&#39;</span>
+
+    <span class="k">return</span> <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Listening on path <code class="docutils literal notranslate"><span class="pre">/</span></code> with <code class="docutils literal notranslate"><span class="pre">GET</span></code> method,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">lambda_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
+
+    <span class="nd">@app.route</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;Hello&#39;</span>
+
+    <span class="k">return</span> <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Use list to listen on more methods,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">lambda_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
+
+    <span class="nd">@app.route</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;Hello&#39;</span>
+
+    <span class="k">return</span> <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="request">
+<h2>Request<a class="headerlink" href="#request" title="Permalink to this headline">¶</a></h2>
+<p>Each function will receive a request instance as parameter. You can use this object to get anything you want.</p>
+<p>A request body from API Gateway will look like this:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+  &quot;body&quot;: &quot;&quot;,
+  &quot;resource&quot;: &quot;/hello&quot;,
+  &quot;path&quot;: &quot;/hello&quot;,
+  &quot;httpMethod&quot;: &quot;GET&quot;,
+  &quot;isBase64Encoded&quot;: false,
+  &quot;queryStringParameters&quot;: null,
+  &quot;pathParameters&quot;: null,
+  &quot;stageVariables&quot;: null,
+  &quot;headers&quot;: {
+    &quot;Accept&quot;: &quot;text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8&quot;,
+    &quot;Accept-Encoding&quot;: &quot;gzip, deflate, sdch&quot;,
+    &quot;Accept-Language&quot;: &quot;en-US,en;q=0.8&quot;,
+    &quot;Cache-Control&quot;: &quot;max-age=0&quot;,
+    &quot;User-Agent&quot;: &quot;Custom User Agent String&quot;
+  }
+  &quot;requestContext&quot;: {
+    //......
+  }
+}
+</pre></div>
+</div>
+<p><strong>Lamapi</strong> framework will store this object in <em>request</em> object. And you can get all you want by accessing request object’s attributes.</p>
+<div class="section" id="request-path">
+<h3>Request Path<a class="headerlink" href="#request-path" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="request-method">
+<h3>Request Method<a class="headerlink" href="#request-method" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">method</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="query-parameters">
+<h3>Query Parameters<a class="headerlink" href="#query-parameters" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+    <span class="c1"># if request url is /hello?id=1</span>
+    <span class="c1"># then id = 1</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;default&#39;</span>
+    <span class="c1"># give some default value</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="form-data">
+<h3>Form Data<a class="headerlink" href="#form-data" title="Permalink to this headline">¶</a></h3>
+<p>To access form data (data transmitted in a <em>POST</em> or <em>PUT</em> request) you can use the data attributes.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;default&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="path-parameters">
+<h3>Path Parameters<a class="headerlink" href="#path-parameters" title="Permalink to this headline">¶</a></h3>
+<p>If you define some path parameters in API Gateway, you can get them by <em>path_param</em>. If you define your path as <em>/hello/{name}</em>, then requested as <em>/hello/world</em>, you will get path parameters as <em>name=world</em>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">path_param</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;default&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="request-header">
+<h3>Request Header<a class="headerlink" href="#request-header" title="Permalink to this headline">¶</a></h3>
+<p>Headers will be stored in <em>header</em> attribute as a dict.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">accept</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Accept&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="response">
+<h2>Response<a class="headerlink" href="#response" title="Permalink to this headline">¶</a></h2>
+<p>Anything you return to handler function will be translated to a JSON object which will be returned to client. You can return a string, dict, list or any object can be encoded to json.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;hello world&#39;</span>
+</pre></div>
+</div>
+<p>If you want to return a custom http code such as <em>400</em> or custom headers, you can build response object by yourself.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lib.lamapi.wrappers</span> <span class="kn">import</span> <span class="n">Response</span>
+
+
+<span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">([],</span> <span class="n">status</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;X-CUSTOM&#39;</span><span class="p">:</span> <span class="s1">&#39;xxx&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>Where to go next? Learn deep about <a class="reference internal" href="configuration.html"><span class="doc">Configuration</span></a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Quick Start</a><ul>
+<li><a class="reference internal" href="#a-minimal-application">A Minimal Application</a></li>
+<li><a class="reference internal" href="#routing">Routing</a></li>
+<li><a class="reference internal" href="#request">Request</a><ul>
+<li><a class="reference internal" href="#request-path">Request Path</a></li>
+<li><a class="reference internal" href="#request-method">Request Method</a></li>
+<li><a class="reference internal" href="#query-parameters">Query Parameters</a></li>
+<li><a class="reference internal" href="#form-data">Form Data</a></li>
+<li><a class="reference internal" href="#path-parameters">Path Parameters</a></li>
+<li><a class="reference internal" href="#request-header">Request Header</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#response">Response</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="installation.html" title="previous chapter">Installation</a></li>
+      <li>Next: <a href="configuration.html" title="next chapter">Configuration</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/quickstart.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, wuwentao.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/quickstart.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

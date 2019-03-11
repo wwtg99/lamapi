@@ -1,0 +1,182 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Installation &#8212; lamapi  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Quick Start" href="quickstart.html" />
+    <link rel="prev" title="Welcome to lamapi’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="python-version">
+<h2>Python Version<a class="headerlink" href="#python-version" title="Permalink to this headline">¶</a></h2>
+<p>We recommend using the latest version of Python 3. Lamapi supports Python 3.5 and newer.</p>
+</div>
+<div class="section" id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<p>Lamapi is a serverless framework and depends on AWS Lambda and API Gateway, so we try to restrict dependent packages. This is the only package you need to try Lamapi except built-in packages.</p>
+<p>Lamapi depends on AWS Lambda and API Gateway, you should deploy the code to AWS after development. We recommend you to use something like <a class="reference external" href="https://serverless.com/">Serverless Framework</a>, check <a class="reference external" href="https://serverless.com/framework/docs/providers/aws/guide/quick-start/">here</a> to see how to use serverless framework on AWS.</p>
+</div>
+<div class="section" id="id1">
+<h2>Installation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>You should install lamapi in the current directory since you can upload it to Lambda.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip install -t lib lamapi
+</pre></div>
+</div>
+<p>Lamapi is now installed. Check out the <a class="reference internal" href="quickstart.html"><span class="doc">Quick Start</span></a> or go to the
+<a class="reference internal" href="index.html"><span class="doc">Documentation Overview</span></a>.</p>
+<p>Check out our source from <a class="reference external" href="https://github.com/wwtg99/lamapi">Github</a>.</p>
+</div>
+<div class="section" id="start-serverless-project-using-serverless-framework-and-lamapi">
+<h2>Start Serverless Project using Serverless Framework and Lamapi<a class="headerlink" href="#start-serverless-project-using-serverless-framework-and-lamapi" title="Permalink to this headline">¶</a></h2>
+<p>We assume you have <strong>Serverless Framework</strong> installed. <a class="reference external" href="https://serverless.com/framework/docs/providers/aws/guide/installation/">Installation Guide</a></p>
+<div class="section" id="create-a-project">
+<h3>Create A Project<a class="headerlink" href="#create-a-project" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>serverless create --template aws-python3 --path hello
+</pre></div>
+</div>
+</div>
+<div class="section" id="update-configuration-file">
+<h3>Update Configuration File<a class="headerlink" href="#update-configuration-file" title="Permalink to this headline">¶</a></h3>
+<p>Update <em>serverless.yml</em> to something like this:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">service</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">hello</span>
+
+<span class="l l-Scalar l-Scalar-Plain">provider</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">aws</span>
+  <span class="l l-Scalar l-Scalar-Plain">runtime</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">python3.7</span>
+
+<span class="l l-Scalar l-Scalar-Plain">functions</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">hello</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">handler</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">handler.handler</span>
+    <span class="l l-Scalar l-Scalar-Plain">events</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">http</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">hello</span>
+          <span class="l l-Scalar l-Scalar-Plain">method</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">get</span>
+</pre></div>
+</div>
+<p>We use the python3.7 interpreter and add a function named <em>hello</em> listening at <strong>/hello</strong> path.</p>
+<p>Then we edit <em>handler.py</em> file as below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lib.lamapi</span> <span class="kn">import</span> <span class="n">Application</span>
+
+
+<span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
+
+    <span class="nd">@app.route</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s1">&#39;/hello&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;hello world&#39;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="deploy-test-your-project">
+<h3>Deploy &amp; Test Your Project<a class="headerlink" href="#deploy-test-your-project" title="Permalink to this headline">¶</a></h3>
+<p>Deploy project</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>serverless deploy
+</pre></div>
+</div>
+<p>Invoke function</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>serverless invoke -f hello -l
+</pre></div>
+</div>
+<p>Next start to use <strong>Lamapi</strong> to build a web API <a class="reference internal" href="quickstart.html"><span class="doc">Quick Start</span></a>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#python-version">Python Version</a></li>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li><a class="reference internal" href="#id1">Installation</a></li>
+<li><a class="reference internal" href="#start-serverless-project-using-serverless-framework-and-lamapi">Start Serverless Project using Serverless Framework and Lamapi</a><ul>
+<li><a class="reference internal" href="#create-a-project">Create A Project</a></li>
+<li><a class="reference internal" href="#update-configuration-file">Update Configuration File</a></li>
+<li><a class="reference internal" href="#deploy-test-your-project">Deploy &amp; Test Your Project</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to lamapi’s documentation!</a></li>
+      <li>Next: <a href="quickstart.html" title="next chapter">Quick Start</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/installation.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, wuwentao.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/installation.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

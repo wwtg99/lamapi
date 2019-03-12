@@ -252,9 +252,9 @@ class Application:
         return {
             'path': path,
             'httpMethod': method,
-            'base64_encoded': base64_encoded,
-            'query': query,
+            'isBase64Encoded': base64_encoded,
+            'queryStringParameters': query,
             'headers': headers,
-            'path_parameters': path_parameters,
+            'pathParameters': path_parameters,
             'body': body
         }

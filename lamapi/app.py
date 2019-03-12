@@ -234,3 +234,27 @@ class Application:
             self.register_router(path=path, method=method, callback=func)
             return func
         return wrapper
+
+    @staticmethod
+    def preprocess_event(path='/', method='GET', body=None, query=None, path_parameters=None, headers=None, base64_encoded=False):
+        """
+        Preprocess event to build the standard event object.
+
+        :param path:
+        :param method:
+        :param body:
+        :param query:
+        :param path_parameters:
+        :param headers:
+        :param base64_encoded:
+        :return:
+        """
+        return {
+            'path': path,
+            'httpMethod': method,
+            'base64_encoded': base64_encoded,
+            'query': query,
+            'headers': headers,
+            'path_parameters': path_parameters,
+            'body': body
+        }

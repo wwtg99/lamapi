@@ -63,3 +63,21 @@ Change your **config.py** file,
   class Config(BaseConfig):
 
       VAR1 = os.environ.get('VALUE1') or 'default'
+
+
+Built-in configuration
+
+There are also some built-in configuration defined in the BaseConfig class. You can change them by using environments.
+
+**LOG_LEVEL**
+
+Define the logging level, values [``FATAL``, ``ERROR``, ``WARNING``, ``INFO``, ``DEBUG``], default ``ERROR``
+
+**LOG_FORMATTER**
+
+Define the logging formatter, default ``%(asctime)s [%(levelname)s] %(filename)s (%(lineno)d): %(message)s``
+
+**ENABLE_CORS**
+
+Enable CORS or not, values [``on``, ``off``], default ``off``
+

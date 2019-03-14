@@ -65,6 +65,11 @@ Update *serverless.yml* to something like this:
 
 We use the python3.7 interpreter and add a function named *hello* listening at **/hello** path.
 
+
+..
+
+  Note, you should use lambda-proxy integration (it is the default value) for your function because it formats a standard request and response structure. See `Serverless Lambda Proxy Integration <https://serverless.com/framework/docs/providers/aws/events/apigateway/#lambda-proxy-integration>`_ and `AWS API Gateway Integration <https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-integration-types.html>`_.
+
 Then we edit *handler.py* file as below:
 
 .. code-block:: python

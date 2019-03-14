@@ -238,7 +238,8 @@ class Application:
     @staticmethod
     def preprocess_event(path='/', method='GET', body=None, query=None, path_parameters=None, headers=None, base64_encoded=False):
         """
-        Preprocess event to build the standard event object.
+        Preprocess event to build the standard event object for other data structure.
+        It is used to transform other event structure if you do not use Lambda-proxy integration.
 
         :param path:
         :param method:

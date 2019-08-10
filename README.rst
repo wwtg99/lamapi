@@ -6,6 +6,13 @@ A simple framework for building serverless api web applications based on AWS lam
 Installation
 ************
 
+::
 
-Usage
-*****
+    pip install lamapi
+
+
+Documentation
+*************
+
+Documentation at https://lamapi.readthedocs.io/en/latest/
+
